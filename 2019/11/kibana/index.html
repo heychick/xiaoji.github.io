@@ -16,7 +16,7 @@
     <meta name="description" content="" />
     
     <title>
-      Archives2019/11 - chick
+      kibana - chick
     </title>
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -56,7 +56,7 @@
           Home
         </a>
         
-        <a href="/archives" class="current">
+        <a href="/archives" class="">
           Archives
         </a>
         
@@ -110,7 +110,7 @@
             Home
           </a>
           
-          <a href="/archives" class="current">
+          <a href="/archives" class="">
             Archives
           </a>
           
@@ -151,79 +151,181 @@
     </div>
     <div id="container">
       <div class="main animated bounceInRight delay-0.7s">
-        <div id="archives">
-    
-        <div class="title">
-            Archives 
-             - 2019/11
-        </div>
-    
-
-
-
-
-    
-    
-    <section class="wrap">
-        <div class="meta">
-            <a href="/archives/2019" >
-                2019
-            </a>
-        </div>
-        <div class="year">
-            
-            <article class="item">
-            <a href="2019/11/Hadoop/" title="Hadoop">
-                <span>2019/11/19</span>
-                <span>Hadoop</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="2019/11/mysql/" title="mysql">
-                <span>2019/11/17</span>
-                <span>mysql</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="2019/11/kibana/" title="kibana">
-                <span>2019/11/16</span>
-                <span>kibana</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="2019/11/about/me/" title="page">
-                <span>2019/11/13</span>
-                <span>page</span>
-            </a>
-            </article>
-            
-
-
-            <article class="item">
-            <a href="2019/11/zabbix/" title="ansible">
-                <span>2019/11/13</span>
-                <span>ansible</span>
-            </a>
-            </article>
-            
-    
-        </div>
-    </section>
+        <article class="post-entry">
+    <div class="header">
       
-<div class="paginator">
-    <span class="page-number current">1</span>
-</div>
-</div>
+      <div class="title">kibana</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2019/11/16</span>
+        </span>
 
+        
+
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <p>// </p><p style="color:red,font-size:20px">This is some text!</p> <p></p>
+<blockquote>
+<p><font face="微软雅黑" color="00CED1" size="6"><strong>安装elasticsearch</strong></font><br><font face="微软雅黑" color="red" size="4">软件包java-1.8.0-openjdk elasticsearch</font><br><font face="微软雅黑" color="red" size="4">配置文件/etc/elasticsearch/elasticsearch.yml</font></p>
+</blockquote>
+<ul>
+<li>17 cluster.name: myelk        //配置集群名字</li>
+<li>23 node.name: es1        //当前主机名称</li>
+<li>54 network.host: 0.0.0.0     // 0.0.0.0（监听所有地址）</li>
+<li>68 discovery.zen.ping.unicast.hosts: [“es1”, “es2”, “es3”]  //声明集群里的主机成员有谁，不需要全部写进去(hosts需要配置)<blockquote>
+<p><font face="微软雅黑" color="red" size="2">配置好,启动服务,发现9200,9300被监听.curl ip:9200即可</font><br><font face="微软雅黑" color="red" size="4">ES集群配置</font><br><font face="微软雅黑" color="red" size="4">更改配置文件node.name即可</font><br>curl <a href="http://192.168.1.51:9200/_cluster/health?pretty" target="_blank" rel="noopener">http://192.168.1.51:9200/_cluster/health?pretty</a></p>
+</blockquote>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>安装包</th>
+<th align="center">插件 名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>elasticsearch-head-master.zip</td>
+<td align="center">//安装head插件</td>
+</tr>
+<tr>
+<td>elasticsearch-kopf-master.zip</td>
+<td align="center">//安装kopf插件</td>
+</tr>
+<tr>
+<td>bigdesk-master.zip</td>
+<td align="center">//安装bigdesk插件</td>
+</tr>
+<tr>
+<td>./plugin install</td>
+<td align="center">//安装插件</td>
+</tr>
+<tr>
+<td>./plugin  list</td>
+<td align="center">//查看安装的插件</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>访问插件 curl <a href="http://192.168.1.55:9200/_plugin/xxx" target="_blank" rel="noopener">http://192.168.1.55:9200/_plugin/xxx</a> (head)</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><font face="微软雅黑" color="00CED1" size="6"><strong>安装kibana</strong></font><br><font face="微软雅黑" color="red" size="4">软件包kibana-4.5.2-1.x86_64</font><br><font face="微软雅黑" color="red" size="4">配置文件/opt/kibana/config/kibana.yml</font></p>
+</blockquote>
+<ul>
+<li>2  server.port: 5601                                     #端口 </li>
+<li>5  server.host: “0.0.0.0”                      #地址    </li>
+<li>15 elasticsearch.url: “<a href="http://es1:9200&quot;" target="_blank" rel="noopener">http://es1:9200&quot;</a>  #数据库地址         </li>
+<li>23 kibana.index: “.kibana”                 #创建索引的名称,数据库可以查询    </li>
+<li>26 kibana.defaultAppId: “discover”       #默认首页     </li>
+<li>53 elasticsearch.pingTimeout: 1500       #ping超时     </li>
+<li>57 elasticsearch.requestTimeout: 30000   #请求超时             </li>
+<li>64 elasticsearch.startupTimeou                     #启动超时    </li>
+</ul>
+<blockquote>
+<p><font face="微软雅黑" color="red" size="4">启动服务</font><br>systemctl restart kibana</p>
+</blockquote>
+<hr>
+<blockquote>
+<blockquote>
+<p><a href="https://www.elastic.co/guide/en/logstash/current/plugins-inputs-file.html" target="_blank" rel="noopener">帮助文档</a><br>path  =&gt; “”  文件路径<br>start_position    string, one of [“beginning”, “end”]    No<br>sincedb_path      string               No<br>指针文件  /var/lib/logstash/since.db  标识上一次读到哪里,下次重断掉位置继续读(文件会自动创建)<br>type =&gt; “”  日志类型标签(随便写)</p>
+</blockquote>
+</blockquote>
+<hr>
+<blockquote>
+<p><font face="微软雅黑" color="red" size="4">配置文件</font><br>cat /etc/logstash/logstash.conf                       </p>
+</blockquote>
+<ul>
+<li>input {                                                                  </li>
+<li>file {                                                                 </li>
+<li>path =&gt; [“/tmp/a.log”]                                               </li>
+<li>start_position =&gt; “beginning”                                        </li>
+<li>sincedb_path =&gt; “/var/lib/logstash/since.db”                         </li>
+<li>type =&gt; “a_log”                                                      </li>
+<li>}                                                                      </li>
+<li>}                                                                        </li>
+<li>filter{                                                                  </li>
+<li>}                                                                        </li>
+<li>utput {                                                                  </li>
+<li>stdout   { codec =&gt; “rubydebug”}                                 </li>
+<li>}   </li>
+</ul>
+<hr>
+<blockquote>
+<p><font face="微软雅黑" color="red" size="5"> 执行测试 </font><br>/opt/logstash/bin/logstash -f /etc/logstash/logstash.conf                 </p>
+</blockquote>
+<hr>
+<blockquote>
+<p>[root@es5 ~]curl -XDELETE  “<a href="http://es1:9200/*&quot;" target="_blank" rel="noopener">http://es1:9200/*&quot;</a></p>
+<p><font face="微软雅黑" color="red" size="5">  filter grok插件安装配置</font><br>filebeat<br>配置文件路径:/etc/filebeat/filebeat.yml<br><font face="微软雅黑" color="red" size="3"> 正则宏路径 </font><br>vim /opt/logstash/vendor/bundle/jruby/1.9/gems/logstash-patterns-core-2.0.5/patterns/grok-patterns </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aaaa</span><br><span class="line">bbb</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <div class="post-guide">
+    <div class="item left">
+        
+          <a href="2019/11/mysql/">mysql</a>
+        
+    </div>
+    <div class="item right">
+        
+          <a href="2019/11/about/me/">page</a>
+        
+    </div>
+  </div>
+
+  
+
+  <div class="post-copyright">
+    <div class="auth">
+      本文作者：<a href="/114.55.64.175">wll</a>
+    </div>
+    <div class="link">
+      永久链接：<a href="/114.55.64.175/2019/11/kibana/">/114.55.64.175/2019/11/kibana/</a>
+    </div>
+    <div class="declare">
+      版权声明：本文首发于<a href="/114.55.64.175">wll</a>的博客，转载请注明出处！
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
+  
+</article>
         <footer>
           <div class="copyright">
             ©2019

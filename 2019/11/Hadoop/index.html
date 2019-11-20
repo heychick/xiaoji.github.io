@@ -306,6 +306,14 @@ hdfs-site.xml</code></pre></li>
 </ol>
 <p>日志文件/usr/loacl/hadop/logs<br>hadoop组件-启动该进程用户-该程序的角色-哪台机器启动<br>hadoop-root-namenode-docker1.log   log 日志<br>doop-root-namenode-docker1.out     out 标准输出</p>
 <hr>
+<blockquote>
+<p><font face="微软雅黑" color="00CED1" size="6"> mapred部署</font><br>cd /usr/local/hadoop/etc/hadoop/<br>cp mapred-site.xml.template  mapred-site.xml</p>
+</blockquote>
+<p><font color="008000" size="2">  &lt;property&gt;             </font><br><font color="008000" size="2">                &lt;name&gt;mapreduce.framework.name&lt;/name&gt;   </font><br><font color="008000" size="2">                 &lt;value&gt;yarn&lt;/value&gt;    </font><br><font color="008000" size="2">         &lt;/property&gt;     </font></p>
+<blockquote>
+<p>yarn-site.xml</p>
+</blockquote>
+<p><font color="008000" size="2">   &lt;property&gt;             </font><br><font color="008000" size="2">         &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;   </font><br><font color="008000" size="2">         &lt;value&gt;docker1&lt;/value&gt;    </font><br><font color="008000" size="2">         </font><br><font color="008000" size="2">   <property>        </property></font><br><font color="008000" size="2">         <name>yarn.nodemanager.aux-services</name>    </font><br><font color="008000" size="2">         <value>mapreduce_shuffle</value>  </font><br><font color="008000" size="2">     </font></p>
 <hr>
 <p>ansible 脚本hadoop.yml<br>#—                                                                 </p>
 <ul>

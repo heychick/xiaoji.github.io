@@ -16,7 +16,7 @@
     <meta name="description" content="" />
     
     <title>
-      ansible - chick
+      ansible部署zabbix - chick
     </title>
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -154,7 +154,7 @@
         <article class="post-entry">
     <div class="header">
       
-      <div class="title">ansible</div>
+      <div class="title">ansible部署zabbix</div>
       <div class="meta">
         <span class="item">
           <span class="iconfont icon-time-circle"></span>
@@ -170,7 +170,106 @@
       <div>
       </div>
     </div>
-    <p>#!/bin/bash<br>yum -y install gcc pcre-devel curl-devel net-snmp-devel  libevent-devel<br>cd /usr/local/src<br>tar -xf zabbix-3.4.4.tar.gz<br>cd zabbix-3.4.4<br>./configure –enable-agent<br>#–with-net-snmp –with-libcurl –enable-agent<br>make install<br>sed -i ‘s/^Server/#Server/‘ /usr/local/etc/zabbix_agentd.conf<br>sed -i ‘s/# StartAgents=3/StartAgents=0/‘ /usr/local/etc/zabbix_agentd.conf<br>sed -i ‘s/# ServerActive=/ServerActive=192.168.1.40/‘ /usr/local/etc/zabbix_agentd.conf<br>sed -i ‘s/Hostname=Zabbix server/Hostname=db1/‘ /usr/local/etc/zabbix_agentd.conf<br>sed -i ‘s/# RefreshActiveChecks=120/RefreshActiveChecks=120/‘ /usr/local/etc/zabbix_agentd.conf</p>
+    <ul>
+<li>ansible<br><a href="https://releases.ansible.com/ansible/" target="_blank" rel="noopener">https://releases.ansible.com/ansible/</a><br>##<strong>环境准备</strong></li>
+</ul>
+<p>192.168.1.11 zabbix1<br>192.168.1.12 zabbix2<br>192.168.1.13 zabbix3</p>
+<p>##<strong>装包</strong></p>
+<ul>
+<li><p>ansible-2.4.2.0-2.el7.noarch.rpm         </p>
+</li>
+<li><p>python-paramiko-2.1.1-4.el7.noarch.rpm</p>
+</li>
+<li><p>python2-jmespath-0.9.0-3.el7.noarch.rpm </p>
+</li>
+<li><p>python-passlib-1.6.5-2.el7.noarch.rpm</p>
+</li>
+<li><p>python-httplib2-0.9.2-1.el7.noarch.rpm   </p>
+</li>
+<li><p>sshpass-1.06-2.el7.x86_64.rpm</p>
+</li>
+<li><p>cat /etc/hosts</p>
+<ul>
+<li>192.168.1.11 zabbix1</li>
+<li>192.168.1.12 zabbix2</li>
+<li>192.168.1.13 zabbix3</li>
+</ul>
+</li>
+<li><p>ssh 主机key 验证配置参数 false 不需要yes</p>
+<ul>
+<li>/etc/ansible/ansible.cfg</li>
+<li>host_key_checking = False</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>cat /etc/ansible/hosts<ul>
+<li>[zabbix]</li>
+<li>zabbix2  ansible_ssh_pass=”a”</li>
+<li>zabbix3  ansible_ssh_pass=”a”</li>
+</ul>
+</li>
+<li>ansible_ssh_port  ssh端口号</li>
+<li>ansible_ssh_user  ssh用户名</li>
+<li>ansible_ssh_pass  ssh密码</li>
+<li>ansible_ssh_private_key_file ssh使用的私钥文件,适用于有多个秘钥.</li>
+<li>vars 变量定义<ul>
+<li>ansible_ssh_private_key_file=”/root/.ssh/key”</li>
+</ul>
+</li>
+<li>children<ul>
+<li>[app:childre]</li>
+<li>web<ul>
+<li>db<blockquote>
+<p>自定义配置文件<br>[defaults]<br>inventory = myhost<br>host_key_checking = False</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>检测主机<ul>
+<li>ansible all –list-hosts</li>
+<li>ansible all -m ping -k </li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>同步hosts文件<ul>
+<li>ansible zabbix -m copy -a “src=/etc/hosts dest=/etc/hosts”</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>shell脚本<ul>
+<li>#!/bin/bash</li>
+<li>yum -y install gcc pcre-devel curl-devel net-snmp-devel  libevent-devel</li>
+<li>cd /usr/local/src</li>
+<li>tar -xf zabbix-3.4.4.tar.gz</li>
+<li>cd zabbix-3.4.4</li>
+<li>./configure –enable-agent</li>
+<li>#–with-net-snmp –with-libcurl –enable-agent</li>
+<li>make install</li>
+<li>sed -i ‘s/^Server/#Server/‘ /usr/local/etc/zabbix_agentd.conf</li>
+<li>sed -i ‘s/# StartAgents=3/StartAgents=0/‘ /usr/local/etc/zabbix_agentd.conf</li>
+<li>sed -i ‘s/# ServerActive=/ServerActive=192.168.1.40/‘ /usr/local/etc/zabbix_agentd.conf</li>
+<li>sed -i ‘s/Hostname=Zabbix server/Hostname=db1/‘ /usr/local/etc/zabbix_agentd.conf</li>
+<li>sed -i ‘s/# RefreshActiveChecks=120/RefreshActiveChecks=120/‘ /usr/local/etc/zabbix_agentd.conf</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>1、启动服务：<br>ansible all -m service -a “name=nagios state=started”</p>
+<p>2、停止服务：<br>ansible all -m service -a “name=nagios state=stopped”</p>
+<p>3、重启服务：<br>ansible all -m service -a “name=nagios state=restarted”</p>
+<p>4、开机启动：<br>ansible all -m service -a “name=nagios enable=yes”</p>
+<p>5、停止开机启动：<br>ansible all -m service -a “name=nagios enable=no”</p>
+<p>6、带参数启动：<br>ansible all -m service -a “name=network state=restarted args=eth0”</p>
+<p>1、下载文件到指定目录：<br>ansible all -m get_url -a “url=<a href="http://www.guojinbao.com" target="_blank" rel="noopener">http://www.guojinbao.com</a> dest=/tmp/guojinbao mode=0440 force=yes”<br>需要添加登录名密码的网站，使用url_password、url_username参数来定义</p>
+<p>2、解压ansible管理机上的压缩文件到远程主机：<br>ansible all -m unarchive -a “src=/tmp/install/zabbix-3.0.4.tar.gz dest=/tmp/ mode=0755 copy=yes”</p>
+<p>3、解压远程主机上的文件到目录：<br>ansible all -m unarchive -a “src=/tmp/install/zabbix-3.0.4.tar.gz dest=/tmp/ mode=0755 copy=no”</p>
 
 
   

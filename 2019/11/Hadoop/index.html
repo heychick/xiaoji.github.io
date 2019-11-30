@@ -284,14 +284,8 @@
 <li>mkdir /var/hadoop</li>
 <li>初始化 /usr/local/hadoop/bin/hdfs namenode -format</li>
 <li>启动集群 /usr/local/hadoop/sbin/start-dfs.sh</li>
-<li>jsp验证角色(docker1会出现2个角色,node[1:3] 会出现1个datanode角色] <pre><code>jps
-    7233 SecondaryNameNode
-    7515 NameNode
-    9115 Jps
-[root@node2 ~]# jps                             
-    24912 Jps                                       
-    24790 DataNode </code></pre></li>
-<li>/usr/local/hadoop/bin/hdfs dfsadmin -report<br>Live datanodes (3):</li>
+<li>jsp验证角色(docker1会出现2个角色,node[1:3] 会出现1个datanode角色]<br><font color="008000" size="2">        [root@docker1 ~]# jps<br><font color="008000" size="2">            7233 SecondaryNameNode </font><br><font color="008000" size="2">            7515 NameNode </font><br><font color="008000" size="2">            9115 Jps </font><br><font color="008000" size="2">        [root@node2 ~]# jps            </font><br><font color="008000" size="2">            24912 Jps             </font><br><font color="008000" size="2">            24790 DataNode </font></font></li>
+<li>/usr/local/hadoop/bin/hdfs dfsadmin -report<br>集群数量Live datanodes (3):</li>
 </ol>
 <hr>
 <p>PS: <font size="4">排错思路</font></p>
@@ -307,13 +301,52 @@ hdfs-site.xml</code></pre></li>
 <p>日志文件/usr/loacl/hadop/logs<br>hadoop组件-启动该进程用户-该程序的角色-哪台机器启动<br>hadoop-root-namenode-docker1.log   log 日志<br>doop-root-namenode-docker1.out     out 标准输出</p>
 <hr>
 <blockquote>
-<p><font face="微软雅黑" color="00CED1" size="6"> mapred部署</font><br>cd /usr/local/hadoop/etc/hadoop/<br>cp mapred-site.xml.template  mapred-site.xml</p>
+<p><font face="微软雅黑" color="00CED1" size="6"> mapred部署</font></p>
+</blockquote>
+<blockquote>
+<p>cd /usr/local/hadoop/etc/hadoop/<br>cp mapred-site.xml.template  mapred-site.xml</p>
 </blockquote>
 <p><font color="008000" size="2">  &lt;property&gt;             </font><br><font color="008000" size="2">                &lt;name&gt;mapreduce.framework.name&lt;/name&gt;   </font><br><font color="008000" size="2">                 &lt;value&gt;yarn&lt;/value&gt;    </font><br><font color="008000" size="2">         &lt;/property&gt;     </font></p>
 <blockquote>
 <p>yarn-site.xml</p>
 </blockquote>
-<p><font color="008000" size="2">   &lt;property&gt;             </font><br><font color="008000" size="2">         &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;   </font><br><font color="008000" size="2">         &lt;value&gt;docker1&lt;/value&gt;    </font><br><font color="008000" size="2">         </font><br><font color="008000" size="2">   <property>        </property></font><br><font color="008000" size="2">         <name>yarn.nodemanager.aux-services</name>    </font><br><font color="008000" size="2">         <value>mapreduce_shuffle</value>  </font><br><font color="008000" size="2">     </font></p>
+<p><font color="008000" size="2">   &lt;property&gt;             </font><br><font color="008000" size="2">         &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;   </font><br><font color="008000" size="2">         &lt;value&gt;docker1&lt;/value&gt;    </font><br><font color="008000" size="2">   &lt;/property&gt;      </font><br><font color="008000" size="2">   &lt;property&gt;        </font><br><font color="008000" size="2">         &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;    </font><br><font color="008000" size="2">         &lt;value&gt;mapreduce_shuffle&lt;/value&gt;  </font><br><font color="008000" size="2">   &lt;/property&gt;  </font></p>
+<ul>
+<li>yarn.resourcemanager.hostname 地址</li>
+<li>yarn.nodemanager.aux-services 使用哪个计算框架</li>
+<li>mapreduce_shuffle  计算机框架名称<blockquote>
+<p>验证服务</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>jps</p>
+</li>
+<li><p>./bin/yarn node -list</p>
+</li>
+<li><p>namenode节点  <a href="http://192.168.1.30:50070/" target="_blank" rel="noopener">http://192.168.1.30:50070/</a></p>
+</li>
+<li><p>secondory namenode 节点 <a href="http://192.168.1.30:50090/" target="_blank" rel="noopener">http://192.168.1.30:50090/</a></p>
+</li>
+<li><p>datanode节点(node[1:3] <a href="http://192.168.1.31:50075/" target="_blank" rel="noopener">http://192.168.1.31:50075/</a></p>
+</li>
+<li><p>resourcemanager节点  <a href="http://192.168.1.30:8088/" target="_blank" rel="noopener">http://192.168.1.30:8088/</a></p>
+</li>
+<li><p>nodemanager节点(node[1:3] <a href="http://192.168.1.31:8042/" target="_blank" rel="noopener">http://192.168.1.31:8042/</a></p>
+</li>
+</ul>
+<ol>
+<li>HDFS 端口 start-dfs.sh   docker1 50070 50090   node[1:3]50075</li>
+<li>yarn 端口 start-yarn.sh  docker1 8088          node[1:3]8042</li>
+</ol>
+<hr>
+<blockquote>
+<p>HDFS基本使用<br>基本命令</p>
+</blockquote>
+<ol>
+<li>./bin/hadoop fs -ls /</li>
+<li>./bin/hadoop fs -touchz </li>
+</ol>
 <hr>
 <p>ansible 脚本hadoop.yml<br>#—                                                                 </p>
 <ul>
@@ -336,6 +369,8 @@ hdfs-site.xml</code></pre></li>
   
   <div class="post-guide">
     <div class="item left">
+        
+          <a href="2019/11/k8s/">k8s</a>
         
     </div>
     <div class="item right">
